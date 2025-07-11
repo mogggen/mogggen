@@ -10,5 +10,9 @@
 [![Bubble Planet Chase](https://img.itch.zone/aW1nLzE5NTMzNzE2LmpwZw==/315x250%23c/JPFy2X.jpg)](https://vogonistic.itch.io/bubble-planet-chase)
 
 
+<!-- Networking
+Rendering
+AI (Boxing AI) -->
+
 ![mogggen's Github stats](https://github-readme-stats.vercel.app/api?username=mogggen&show_icons=true)
 ![Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=mogggen&layout=compact)
