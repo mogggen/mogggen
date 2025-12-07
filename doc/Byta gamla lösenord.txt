@@ -1,0 +1,16 @@
+Byta gamla lösenord
+
+Gör klart mark-down portfolio
+    Länka till allt.
+    Skriv rapporter till det som saknas.
+    Ladda ner dokument och spara allt i github
+    Gör en fränare portfolio sida
+
+Kyrkoskatt 2.1%
+Begravningsskatt 0.14%
+Inkomstskatt över 20 008kr per år 34% i Västerbotten
+
+
+Skriv om bostadskö python scriptet i javascript för bättre kompabilitet.
+
+Installera en webläsare som inte blockar masssa saker som Brave gör så att det inte fuckar med provet.
