@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio – Morgan Nyman</title>
+  <meta name="description"
+    content="Full portfolio and year-book timeline of Morgan Nyman – projects, games, open-source work and milestones from 2015 to present." />
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmxkj4k/hChqfMDxWG/6tRoKMt+" crossorigin="anonymous"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --grad-top: #00b7ff;
+      --grad-bot: #4131A1;
+      --glass-bg: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --accent: #00b7ff;
+      --accent2: #7c5cfc;
+      --text: #e8f4ff;
+      --text-muted: rgba(232, 244, 255, 0.65);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--grad-top);
+      background-image: linear-gradient(160deg, var(--grad-top) 0%, #1a6fff 40%, var(--grad-bot) 100%);
+      background-attachment: fixed;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Navbar ────────────────────────────────────────────────── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10, 30, 80, 0.55);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .brand-name {
+      font-weight: 900; font-size: 1.2rem;
+      background: linear-gradient(90deg, #fff 0%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      letter-spacing: -0.5px;
+    }
+    .nav-link { color: var(--text-muted) !important; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-link:hover, .nav-link.active { color: #fff !important; }
+    .social-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border);
+      transition: background 0.2s, transform 0.2s; color: #fff; text-decoration: none;
+    }
+    .social-icon:hover { background: rgba(255,255,255,0.22); transform: scale(1.12); color: #fff; }
+    .social-icon svg { width: 18px; height: 18px; fill: currentColor; }
+
+    /* ── Page header ───────────────────────────────────────────── */
+    .page-header {
+      padding: 64px 0 40px;
+      position: relative; z-index: 1;
+    }
+    .page-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900; letter-spacing: -1.5px;
+    }
+    .section-divider {
+      width: 48px; height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 2px; margin: 12px 0 20px;
+    }
+
+    /* ── Glass card ────────────────────────────────────────────── */
+    .glass-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-radius: 18px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .glass-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.25); }
+
+    /* ── TOC Sidebar ───────────────────────────────────────────── */
+    .toc-sidebar {
+      position: sticky; top: 80px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent2) transparent;
+    }
+    .toc-link {
+      display: block; padding: 6px 12px;
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.84rem; font-weight: 600;
+      border-left: 3px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      border-radius: 0 6px 6px 0;
+    }
+    .toc-link:hover { color: #fff; border-color: var(--accent); }
+    .toc-link.active { color: var(--accent); border-color: var(--accent); background: rgba(0,183,255,0.08); }
+    .toc-year-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--text-muted);
+      padding: 10px 12px 4px; opacity: 0.7;
+    }
+
+    /* ── Year section ──────────────────────────────────────────── */
+    .year-section { padding: 40px 0 10px; position: relative; z-index: 1; }
+    .year-heading {
+      font-size: 2.8rem; font-weight: 900; letter-spacing: -2px;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      line-height: 1; margin-bottom: 6px;
+    }
+
+    /* ── Project card ──────────────────────────────────────────── */
+    .proj-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      height: 100%;
+      display: flex; flex-direction: column;
+    }
+    .proj-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+
+    .proj-thumb-large {
+      width: 100%; height: 160px;
+      object-fit: cover;
+    }
+
+    .proj-placeholder {
+      width: 100%; height: 160px;
+      background: linear-gradient(135deg, rgba(0,183,255,0.1), rgba(124,92,252,0.1));
+      border-bottom: 1px solid var(--glass-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+    }
+
+    .proj-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+    .proj-title { font-size: 0.98rem; font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
+    .proj-desc { font-size: 0.82rem; color: var(--text-muted); flex: 1; line-height: 1.5; }
+    .proj-footer { padding: 10px 16px 14px; display: flex; gap: 4px; flex-wrap: wrap; }
+
+    /* ── Tags ──────────────────────────────────────────────────── */
+    .tag {
+      display: inline-block;
+      background: rgba(0,183,255,0.18); border: 1px solid rgba(0,183,255,0.35);
+      color: var(--accent); border-radius: 999px; font-size: 0.68rem; font-weight: 700;
+      padding: 2px 9px; margin: 1px 2px; white-space: nowrap;
+    }
+    .tag.game  { background: rgba(124,92,252,0.18); border-color: rgba(124,92,252,0.4); color: #b89cff; }
+    .tag.work  { background: rgba(0,200,120,0.14); border-color: rgba(0,200,120,0.35); color: #3ddb9e; }
+    .tag.open  { background: rgba(255,180,0,0.12); border-color: rgba(255,180,0,0.35); color: #ffc435; }
+    .tag.study { background: rgba(255,80,80,0.12); border-color: rgba(255,80,80,0.3); color: #ff8585; }
+
+    /* ── Milestone row ─────────────────────────────────────────── */
+    .milestone-row {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .milestone-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .milestone-text { font-size: 0.9rem; font-weight: 500; }
+    .milestone-text small { display: block; color: var(--text-muted); font-size: 0.78rem; font-weight: 400; }
+
+    /* ── Link button ───────────────────────────────────────────── */
+    .cta-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none; color: #fff; font-weight: 700; padding: 8px 20px;
+      border-radius: 999px; text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s; display: inline-block; font-size: 0.82rem;
+    }
+    .cta-btn:hover { opacity: 0.88; transform: scale(1.03); color: #fff; }
+
+    /* ── Progress / scroll fade ────────────────────────────────── */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Timeline portfolio table ──────────────────────────────── */
+    .timeline-table { border-collapse: separate; border-spacing: 0; width: 100%; }
+    .timeline-table thead th {
+      background: rgba(0,0,0,0.3); border-bottom: 2px solid var(--glass-border);
+      font-size: 0.76rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      color: var(--text-muted); padding: 11px 14px;
+    }
+    .timeline-table tbody tr { border-bottom: 1px solid var(--glass-border); transition: background 0.15s; }
+    .timeline-table tbody tr:hover { background: rgba(255,255,255,0.05); }
+    .timeline-table td { padding: 12px 14px; vertical-align: middle; font-size: 0.88rem; }
+    .yr-cell { font-weight: 900; font-size: 0.95rem; color: var(--accent); white-space: nowrap; }
+    .proj-link-tbl { color: #fff; font-weight: 600; text-decoration: none; transition: color 0.2s; }
+    .proj-link-tbl:hover { color: var(--accent); }
+    .tbl-thumb { width: 50px; height: 34px; border-radius: 5px; object-fit: cover; border: 1px solid var(--glass-border); }
+    .tbl-ph { width: 50px; height: 34px; border-radius: 5px; background: rgba(255,255,255,0.07); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+
+    /* hide overflow for table wrapper */
+    .table-wrapper { border-radius: 14px; overflow: hidden; }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════════════════ NAVBAR ═══════════════════════════ -->
+  <nav class="site-nav navbar navbar-expand-md" id="main-navbar">
+    <div class="container">
+      <a class="navbar-brand brand-name" href="index.html">MN/</a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navMenu" style="color:#fff">
+        <span class="navbar-toggler-icon" style="filter:invert(1)"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto gap-1">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="portfolio.html">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#github-stats">Stats</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+        </ul>
+        <div class="d-flex gap-2 ms-3">
+          <a href="https://github.com/mogggen" target="_blank" rel="noopener" class="social-icon" title="GitHub">
+            <svg viewBox="0 0 640 640"><path d="M316.8 72C178.1 72 72 177.3 72 316C72 426.9 141.8 521.8 241.5 555.2C254.3 557.5 258.8 549.6 258.8 543.1C258.8 536.9 258.5 502.7 258.5 481.7C188.5 496.7 173.8 451.9 173.8 451.9C162.4 422.8 146 415.3 146 415.3C123.1 399.6 147.6 399.9 147.6 399.9C172.5 401.9 186.2 425.7 186.2 425.7C208.1 464.3 244.8 453.2 259.1 446.6C261.4 430.6 267.9 419.5 275.1 412.9C219.2 406.7 162.8 398.6 162.8 302.4C162.8 274.9 170.4 261.1 186.4 243.5C183.8 237 175.3 210.2 189 175.6C209.9 169.1 258 202.6 258 202.6C278 197 299.5 194.1 320.8 194.1C342.1 194.1 363.6 197 383.6 202.6C383.6 202.6 431.7 169 452.6 175.6C466.3 210.3 457.8 237 455.2 243.5C471.2 261.2 481 275 481 302.4C481 398.9 422.1 406.6 366.2 412.9C375.4 420.8 383.2 435.8 383.2 459.3C383.2 493 382.9 534.7 382.9 542.9C382.9 549.4 387.5 557.3 400.2 555C500.2 521.8 568 426.9 568 316C568 177.3 455.5 72 316.8 72Z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════ PAGE HEADER ══════════════════════ -->
+  <header class="page-header">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" style="font-size:0.82rem; opacity:0.8;">
+          <li class="breadcrumb-item"><a href="index.html" style="color:var(--accent); text-decoration:none;">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page" style="color:var(--text-muted);">Portfolio</li>
+        </ol>
+      </nav>
+      <h1 class="page-title">Portfolio &amp; Year-book</h1>
+      <div class="section-divider"></div>
+      <p style="color:var(--text-muted); max-width:560px; font-size:1rem;">
+        A chronological timeline of projects, milestones and adventures from 2015 to present.
+      </p>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════ MAIN CONTENT ══════════════════════ -->
+  <main class="container pb-5">
+    <div class="row g-4">
+
+      <!-- ══ TOC SIDEBAR ══════════════════════════════════════ -->
+      <div class="col-lg-2 d-none d-lg-block">
+        <div class="toc-sidebar" id="toc-sidebar">
+          <div class="glass-card py-3 px-0">
+            <div class="toc-year-label">Jump to</div>
+            <a href="#year-2015" class="toc-link" data-section="year-2015">2015</a>
+            <a href="#year-2016" class="toc-link" data-section="year-2016">2016</a>
+            <a href="#year-2017" class="toc-link" data-section="year-2017">2017</a>
+            <a href="#year-2018" class="toc-link" data-section="year-2018">2018</a>
+            <a href="#year-2019" class="toc-link" data-section="year-2019">2019</a>
+            <a href="#year-2020" class="toc-link" data-section="year-2020">2020</a>
+            <a href="#year-2021" class="toc-link" data-section="year-2021">2021</a>
+            <a href="#year-2022" class="toc-link" data-section="year-2022">2022</a>
+            <a href="#year-2023" class="toc-link" data-section="year-2023">2023</a>
+            <a href="#year-2024" class="toc-link" data-section="year-2024">2024</a>
+            <a href="#year-2025" class="toc-link" data-section="year-2025">2025</a>
+            <a href="#year-ongoing" class="toc-link" data-section="year-ongoing">∞ Ongoing</a>
+            <div class="toc-year-label mt-2">Views</div>
+            <a href="#full-table" class="toc-link">Full Table</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ TIMELINE ══════════════════════════════════════════ -->
+      <div class="col-lg-10">
+
+        <!-- ─── 2015 ─────────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-2015">
+          <div class="year-heading">2015</div>
+          <div class="section-divider"></div>
+          <div class="row g-3">
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🎓</div>
+                <div class="proj-body">
+                  <div class="proj-title">Started at University</div>
+                  <div class="proj-desc">Enrolled in university studies — Programming 1 and Web Development 1 laying the foundation for a software career.</div>
+                </div>
+                <div class="proj-footer"><span class="tag study">Study</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🎮</div>
+                <div class="proj-body">
+                  <div class="proj-title">Achtung, die Kurve! Clone</div>
+                  <div class="proj-desc">Side project: "3 in a row" clone of the classic Achtung, die Kurve! snake-like multiplayer game — one of the first independent game experiments.</div>
+                </div>
+                <div class="proj-footer"><span class="tag game">Game</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── 2016 ─────────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-2016">
+          <div class="year-heading">2016</div>
+          <div class="section-divider"></div>
+          <div class="row g-3">
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🌐</div>
+                <div class="proj-body">
+                  <div class="proj-title">Web Dev 2 &amp; Programming 2</div>
+                  <div class="proj-desc">Deepening web development skills and advancing in programming concepts. Building more complex projects and understanding back-end fundamentals.</div>
+                </div>
+                <div class="proj-footer"><span class="tag study">Study</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── 2017 ─────────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-2017">
+          <div class="year-heading">2017</div>
+          <div class="section-divider"></div>
+          <div class="row g-3">
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🖥️</div>
+                <div class="proj-body">
+                  <div class="proj-title">Finished Personal Website</div>
+                  <div class="proj-desc">Completed first full personal website project — the origin of this very portfolio.</div>
+                </div>
+                <div class="proj-footer"><span class="tag">Web</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🤖</div>
+                <div class="proj-body">
+                  <div class="proj-title">AI Final Paper</div>
+                  <div class="proj-desc">Academic final paper on Artificial Intelligence — exploring foundational concepts and applying them in a practical context.</div>
+                </div>
+                <div class="proj-footer"><span class="tag study">Study</span><span class="tag">AI</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🔍</div>
+                <div class="proj-body">
+                  <div class="proj-title">Google Lund 2017</div>
+                  <div class="proj-desc">Attended Google's tech event in Lund, Sweden — networking with engineers and discovering cutting-edge technologies.</div>
+                </div>
+                <div class="proj-footer"><span class="tag work">Event</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── 2018 ─────────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-2018">
+          <div class="year-heading">2018</div>
+          <div class="section-divider"></div>
+          <div class="row g-3">
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🎓</div>
+                <div class="proj-body">
+                  <div class="proj-title">Started at LTU</div>
+                  <div class="proj-desc">Enrolled at Luleå University of Technology (LTU) in the Computer Game Programming engineering programme.</div>
+                </div>
+                <div class="proj-footer"><span class="tag study">Study</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">💳</div>
+                <div class="proj-body">
+                  <div class="proj-title">Bryggargatan Payment Service POC</div>
+                  <div class="proj-desc">Proof-of-concept payment service backend for a real business scenario — hands-on experience with financial data flows.</div>
+                  <div class="mt-auto pt-2">
+                    <a href="https://github.com/mogggen/Bryggargatan_betalning" target="_blank" rel="noopener" class="cta-btn">View on GitHub</a>
+                  </div>
+                </div>
+                <div class="proj-footer"><span class="tag work">Business</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🥊</div>
+                <div class="proj-body">
+                  <div class="proj-title">Boxing AI</div>
+                  <div class="proj-desc">Developed an AI agent to play a boxing game, exploring machine learning and heuristic game strategies.</div>
+                </div>
+                <div class="proj-footer"><span class="tag">AI</span><span class="tag game">Game</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">📐</div>
+                <div class="proj-body">
+                  <div class="proj-title">MathLib.h – Version 1 of 15</div>
+                  <div class="proj-desc">Started implementing a custom C++ math library for game development — vectors, matrices, quaternions and more. Went through 15 iterations over the years.</div>
+                </div>
+                <div class="proj-footer"><span class="tag">C++</span><span class="tag">Math</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <img src="https://img.itch.zone/aW1nLzY3MzE3ODgucG5n/315x250%23c/oeNK8G.png"
+                  class="proj-thumb-large" alt="Titan: Fall of the Robot Legion" />
+                <div class="proj-body">
+                  <div class="proj-title">Titan: Fall of the Robot Legion</div>
+                  <div class="proj-desc">Sammes Foundation game jam entry — an action title with robot combat and challenging encounters.</div>
+                  <div class="mt-auto pt-2">
+                    <a href="https://siragg.itch.io/titan-the-fall-of-the-robot-legion" target="_blank" rel="noopener" class="cta-btn">Play on itch.io</a>
+                  </div>
+                </div>
+                <div class="proj-footer"><span class="tag game">Game</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── 2019 ─────────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-2019">
+          <div class="year-heading">2019</div>
+          <div class="section-divider"></div>
+          <div class="row g-3">
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <img src="https://img.itch.zone/aW1nLzYxMTQzMDQuanBn/315x250%23c/oz1ge4.jpg"
+                  class="proj-thumb-large" alt="My Queen" />
+                <div class="proj-body">
+                  <div class="proj-title">My Queen</div>
+                  <div class="proj-desc">A chess-inspired game project — strategy meets narrative in this unique game experience.</div>
+                  <div class="mt-auto pt-2">
+                    <a href="https://myqueen.itch.io/my-queen" target="_blank" rel="noopener" class="cta-btn">Play on itch.io</a>
+                  </div>
+                </div>
+                <div class="proj-footer"><span class="tag game">Game</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🐺</div>
+                <div class="proj-body">
+                  <div class="proj-title">Wolf Game on Raspberry Pi</div>
+                  <div class="proj-desc">A Wolfenstein-style raycasting game running on a Raspberry Pi — deeply embedded, resource-constrained programming challenge.</div>
+                </div>
+                <div class="proj-footer"><span class="tag game">Game</span><span class="tag">Embedded</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">⚙️</div>
+                <div class="proj-body">
+                  <div class="proj-title">Graphics Engine (WIP)</div>
+                  <div class="proj-desc">Started complementing a custom graphics engine — exploring OpenGL, rendering pipelines and low-level GPU communication.</div>
+                </div>
+                <div class="proj-footer"><span class="tag">C++</span><span class="tag">OpenGL</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🌌</div>
+                <div class="proj-body">
+                  <div class="proj-title">Raytracing Optimization</div>
+                  <div class="proj-desc">Research and implementation of raytracing performance improvements — BVH trees, SIMD acceleration and cache-friendly data structures.</div>
+                </div>
+                <div class="proj-footer"><span class="tag">C++</span><span class="tag">Graphics</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── 2020 ─────────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-2020">
+          <div class="year-heading">2020</div>
+          <div class="section-divider"></div>
+          <div class="glass-card p-4 text-center" style="color:var(--text-muted);">
+            <div style="font-size:2.5rem; margin-bottom:8px;">🌍</div>
+            <p style="font-size:0.95rem;">A challenging year for everyone. Kept grinding, kept learning.</p>
+          </div>
+        </section>
+
+        <!-- ─── 2021 ─────────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-2021">
+          <div class="year-heading">2021</div>
+          <div class="section-divider"></div>
+          <div class="row g-3">
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🏭</div>
+                <div class="proj-body">
+                  <div class="proj-title">Warehouse + Studies</div>
+                  <div class="proj-desc">Balancing warehouse work with continued university studies — pacing, resilience and real-world perspective.</div>
+                </div>
+                <div class="proj-footer"><span class="tag work">Work</span><span class="tag study">Study</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── 2022 ─────────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-2022">
+          <div class="year-heading">2022</div>
+          <div class="section-divider"></div>
+          <div class="row g-3">
+            <div class="col-md-6 col-xl-6">
+              <div class="proj-card">
+                <div class="proj-placeholder">📝</div>
+                <div class="proj-body">
+                  <div class="proj-title">Examensarbete – Varvault Variable Serialization</div>
+                  <div class="proj-desc">Bachelor thesis: <em>"Recursively prefixing and serializing Varvault variables securely"</em> — exploring secure, structured data serialization patterns in Python projects.</div>
+                </div>
+                <div class="proj-footer"><span class="tag study">Thesis</span><span class="tag">Python</span><span class="tag">Security</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── 2023 ─────────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-2023">
+          <div class="year-heading">2023</div>
+          <div class="section-divider"></div>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🚦</div>
+                <div class="proj-body">
+                  <div class="proj-title">Started using DevOps</div>
+                  <div class="proj-desc">Adopting CI/CD pipelines, containerisation and infrastructure-as-code practices.</div>
+                </div>
+                <div class="proj-footer"><span class="tag work">DevOps</span></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🔣</div>
+                <div class="proj-body">
+                  <div class="proj-title">Learning Regular Expressions</div>
+                  <div class="proj-desc">Deep dive into regex — from basics to advanced lookaheads, backreferences and PCRE patterns.</div>
+                </div>
+                <div class="proj-footer"><span class="tag">Regex</span></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">⌨️</div>
+                <div class="proj-body">
+                  <div class="proj-title">Trying out Vim motions</div>
+                  <div class="proj-desc">Embracing Vim/NeoVim key bindings for maximum editing efficiency — and never looking back.</div>
+                </div>
+                <div class="proj-footer"><span class="tag">Tools</span><span class="tag">Vim</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── 2024 ─────────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-2024">
+          <div class="year-heading">2024</div>
+          <div class="section-divider"></div>
+          <div class="row g-3">
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🚀</div>
+                <div class="proj-body">
+                  <div class="proj-title">Stupid Hackathon – Self login 'er</div>
+                  <div class="proj-desc">Built a self-authenticating login proof-of-concept at the Stupid Hackathon — experimental, fun, and just a bit chaotic.</div>
+                </div>
+                <div class="proj-footer"><span class="tag">Hackathon</span><span class="tag">Auth</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <img src="https://img.itch.zone/aW1nLzE5NTMzNzE2LmpwZw==/315x250%23c/JPFy2X.jpg"
+                  class="proj-thumb-large" alt="Bubble Planet Chase" />
+                <div class="proj-body">
+                  <div class="proj-title">Bubble Planet Chase</div>
+                  <div class="proj-desc">"Vibe coded" at the Jörn Hackathon before vibe-coding was even a term. A planetary bubble-chasing game made in record time.</div>
+                  <div class="mt-auto pt-2">
+                    <a href="https://vogonistic.itch.io/bubble-planet-chase" target="_blank" rel="noopener" class="cta-btn">Play on itch.io</a>
+                  </div>
+                </div>
+                <div class="proj-footer"><span class="tag game">Game</span><span class="tag">Hackathon</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── 2025 ─────────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-2025">
+          <div class="year-heading">2025</div>
+          <div class="section-divider"></div>
+          <div class="row g-3">
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🖧</div>
+                <div class="proj-body">
+                  <div class="proj-title">Self-hosted first LAMP stack</div>
+                  <div class="proj-desc">Set up a full Linux–Apache–MySQL–PHP stack from scratch on personal hardware — owning the full infrastructure.</div>
+                </div>
+                <div class="proj-footer"><span class="tag work">DevOps</span><span class="tag">Linux</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">💼</div>
+                <div class="proj-body">
+                  <div class="proj-title">Working at Elecosoft – Bidcon</div>
+                  <div class="proj-desc">Employed as Software Developer at Elecosoft Consultec AB, working on Bidcon — a leading construction cost estimation tool.</div>
+                </div>
+                <div class="proj-footer"><span class="tag work">Work</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">✂️</div>
+                <div class="proj-body">
+                  <div class="proj-title">ClippUF</div>
+                  <div class="proj-desc">Building ClippUF — an open-source clipboard / snippet utility tool. Work in progress.</div>
+                </div>
+                <div class="proj-footer"><span class="tag open">Open Source</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🐛</div>
+                <div class="proj-body">
+                  <div class="proj-title">Filed Issues with NeoVim, VSCode, fzf, EPPlus</div>
+                  <div class="proj-desc">Contributing back to the open-source ecosystem by filing detailed bug reports for NeoVim, Visual Studio Code, fzf and EPPlus.</div>
+                </div>
+                <div class="proj-footer"><span class="tag open">OSS</span><span class="tag">Bug Report</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🎮</div>
+                <div class="proj-body">
+                  <div class="proj-title">stopkillinggames.com Contribution</div>
+                  <div class="proj-desc">Contributed to the stopp killing games initiative — advocating for game preservation and consumer rights.</div>
+                  <div class="mt-auto pt-2">
+                    <a href="https://stopkillinggames.com/" target="_blank" rel="noopener" class="cta-btn">Visit Site</a>
+                  </div>
+                </div>
+                <div class="proj-footer"><span class="tag open">Open Source</span><span class="tag game">Gaming</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card">
+                <div class="proj-placeholder">🇸🇪</div>
+                <div class="proj-body">
+                  <div class="proj-title">Open-source Koinly Alternative (SE Tax)</div>
+                  <div class="proj-desc">Building an unofficial, open-source proof-of-concept Koinly alternative for Swedish cryptocurrency tax reporting — educational purposes only.</div>
+                </div>
+                <div class="proj-footer"><span class="tag open">Open Source</span><span class="tag">Finance</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── ONGOING ──────────────────────────────────────── -->
+        <section class="year-section fade-in" id="year-ongoing">
+          <div class="year-heading" style="background:linear-gradient(135deg,#ffc435,#ff8a35);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">∞ Ongoing</div>
+          <div class="section-divider" style="background:linear-gradient(90deg,#ffc435,#ff8a35);"></div>
+          <div class="row g-3">
+            <div class="col-md-6 col-xl-4">
+              <div class="proj-card" style="border-color:rgba(255,196,53,0.3);">
+                <div class="proj-placeholder" style="background:linear-gradient(135deg,rgba(255,196,53,0.1),rgba(255,138,53,0.1));">🧪</div>
+                <div class="proj-body">
+                  <div class="proj-title">bf-compiler in PHP-regex</div>
+                  <div class="proj-desc">Attempting to write a Brainfuck compiler using only PHP regular expressions. Chaotic, beautiful, and very much ongoing.</div>
+                </div>
+                <div class="proj-footer"><span class="tag open" style="border-color:rgba(255,196,53,0.5);color:#ffc435;">Ongoing</span><span class="tag">Regex</span><span class="tag">PHP</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── FULL TABLE ───────────────────────────────────── -->
+        <section class="year-section fade-in" id="full-table">
+          <h2 style="font-size:1.5rem; font-weight:800; margin-bottom:4px; letter-spacing:-0.5px;">All Projects – Table View</h2>
+          <div class="section-divider"></div>
+          <div class="table-wrapper glass-card">
+            <table class="timeline-table" aria-label="All projects by year">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>Thumb</th>
+                  <th>Project / Milestone</th>
+                  <th>Tags</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="yr-cell">2015</td><td><div class="tbl-ph">🎓</div></td><td><span class="proj-link-tbl">Started at University – Programming 1 &amp; Web Dev 1</span></td><td><span class="tag study">Study</span></td></tr>
+                <tr><td class="yr-cell">2015</td><td><div class="tbl-ph">🎮</div></td><td><span class="proj-link-tbl">Achtung, die Kurve! clone</span></td><td><span class="tag game">Game</span></td></tr>
+                <tr><td class="yr-cell">2016</td><td><div class="tbl-ph">🌐</div></td><td><span class="proj-link-tbl">Web Dev 2 &amp; Programming 2</span></td><td><span class="tag study">Study</span></td></tr>
+                <tr><td class="yr-cell">2017</td><td><div class="tbl-ph">🖥️</div></td><td><span class="proj-link-tbl">Finished Personal Website</span></td><td><span class="tag">Web</span></td></tr>
+                <tr><td class="yr-cell">2017</td><td><div class="tbl-ph">🤖</div></td><td><span class="proj-link-tbl">AI Final Paper</span></td><td><span class="tag study">Study</span><span class="tag">AI</span></td></tr>
+                <tr><td class="yr-cell">2017</td><td><div class="tbl-ph">🔍</div></td><td><span class="proj-link-tbl">Google Lund 2017</span></td><td><span class="tag work">Event</span></td></tr>
+                <tr><td class="yr-cell">2018</td><td><div class="tbl-ph">🎓</div></td><td><span class="proj-link-tbl">Started at LTU – Computer Game Programming</span></td><td><span class="tag study">Study</span></td></tr>
+                <tr><td class="yr-cell">2018</td><td><div class="tbl-ph">💳</div></td><td><a href="https://github.com/mogggen/Bryggargatan_betalning" target="_blank" rel="noopener" class="proj-link-tbl">Bryggargatan Payment Service POC</a></td><td><span class="tag work">Business</span></td></tr>
+                <tr><td class="yr-cell">2018</td><td><div class="tbl-ph">🥊</div></td><td><span class="proj-link-tbl">Boxing AI</span></td><td><span class="tag">AI</span></td></tr>
+                <tr><td class="yr-cell">2018</td><td><div class="tbl-ph">📐</div></td><td><span class="proj-link-tbl">MathLib.h – v1 of 15</span></td><td><span class="tag">C++</span></td></tr>
+                <tr><td class="yr-cell">2018</td><td><a href="https://siragg.itch.io/titan-the-fall-of-the-robot-legion" target="_blank"><img src="https://img.itch.zone/aW1nLzY3MzE3ODgucG5n/315x250%23c/oeNK8G.png" class="tbl-thumb" alt="Titan"></a></td><td><a href="https://siragg.itch.io/titan-the-fall-of-the-robot-legion" target="_blank" rel="noopener" class="proj-link-tbl">Titan: Fall of the Robot Legion</a></td><td><span class="tag game">Game</span></td></tr>
+                <tr><td class="yr-cell">2019</td><td><a href="https://myqueen.itch.io/my-queen" target="_blank"><img src="https://img.itch.zone/aW1nLzYxMTQzMDQuanBn/315x250%23c/oz1ge4.jpg" class="tbl-thumb" alt="My Queen"></a></td><td><a href="https://myqueen.itch.io/my-queen" target="_blank" rel="noopener" class="proj-link-tbl">My Queen</a></td><td><span class="tag game">Game</span></td></tr>
+                <tr><td class="yr-cell">2019</td><td><div class="tbl-ph">🐺</div></td><td><span class="proj-link-tbl">Wolf Game on Raspberry Pi</span></td><td><span class="tag game">Game</span><span class="tag">Embedded</span></td></tr>
+                <tr><td class="yr-cell">2019</td><td><div class="tbl-ph">⚙️</div></td><td><span class="proj-link-tbl">Graphics Engine (WIP)</span></td><td><span class="tag">C++</span></td></tr>
+                <tr><td class="yr-cell">2019</td><td><div class="tbl-ph">🌌</div></td><td><span class="proj-link-tbl">Raytracing Optimization</span></td><td><span class="tag">C++</span><span class="tag">Graphics</span></td></tr>
+                <tr><td class="yr-cell">2022</td><td><div class="tbl-ph">📝</div></td><td><span class="proj-link-tbl">Examensarbete – Varvault Serialization</span></td><td><span class="tag study">Thesis</span></td></tr>
+                <tr><td class="yr-cell">2023</td><td><div class="tbl-ph">🚦</div></td><td><span class="proj-link-tbl">Started using DevOps, Regex &amp; Vim motions</span></td><td><span class="tag work">DevOps</span><span class="tag">Regex</span></td></tr>
+                <tr><td class="yr-cell">2024</td><td><div class="tbl-ph">🚀</div></td><td><span class="proj-link-tbl">Hackathon – Self login 'er</span></td><td><span class="tag">Hackathon</span></td></tr>
+                <tr><td class="yr-cell">2024</td><td><a href="https://vogonistic.itch.io/bubble-planet-chase" target="_blank"><img src="https://img.itch.zone/aW1nLzE5NTMzNzE2LmpwZw==/315x250%23c/JPFy2X.jpg" class="tbl-thumb" alt="Bubble Planet Chase"></a></td><td><a href="https://vogonistic.itch.io/bubble-planet-chase" target="_blank" rel="noopener" class="proj-link-tbl">Bubble Planet Chase (Jörn Hackathon)</a></td><td><span class="tag game">Game</span><span class="tag">Hackathon</span></td></tr>
+                <tr><td class="yr-cell">2025</td><td><div class="tbl-ph">🖧</div></td><td><span class="proj-link-tbl">Self-hosted first LAMP stack</span></td><td><span class="tag work">DevOps</span></td></tr>
+                <tr><td class="yr-cell">2025</td><td><div class="tbl-ph">💼</div></td><td><span class="proj-link-tbl">Working at Elecosoft with Bidcon</span></td><td><span class="tag work">Work</span></td></tr>
+                <tr><td class="yr-cell">2025</td><td><div class="tbl-ph">✂️</div></td><td><span class="proj-link-tbl">Building ClippUF</span></td><td><span class="tag open">Open Source</span></td></tr>
+                <tr><td class="yr-cell">2025</td><td><div class="tbl-ph">🐛</div></td><td><span class="proj-link-tbl">Filed issues: NeoVim, VSCode, fzf, EPPlus</span></td><td><span class="tag open">OSS</span></td></tr>
+                <tr><td class="yr-cell">2025</td><td><div class="tbl-ph">🎮</div></td><td><a href="https://stopkillinggames.com/" target="_blank" rel="noopener" class="proj-link-tbl">Contributed to stopkillinggames.com</a></td><td><span class="tag open">Open Source</span></td></tr>
+                <tr><td class="yr-cell">2025</td><td><div class="tbl-ph">🇸🇪</div></td><td><span class="proj-link-tbl">Open-source Koinly Alternative (Swedish Tax)</span></td><td><span class="tag open">Open Source</span></td></tr>
+                <tr><td class="yr-cell" style="color:#ffc435;">∞</td><td><div class="tbl-ph">🧪</div></td><td><span class="proj-link-tbl">bf-compiler in PHP-regex</span></td><td><span class="tag open">Ongoing</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div><!-- end col-lg-10 -->
+    </div><!-- end row -->
+  </main>
+
+  <!-- ═══════════════════════ FOOTER ═══════════════════════════ -->
+  <footer style="background:rgba(10,15,50,0.6);backdrop-filter:blur(10px);border-top:1px solid var(--glass-border);padding:32px 0 20px;position:relative;z-index:1;">
+    <div class="container text-center">
+      <p style="color:var(--text-muted);font-size:0.82rem;">
+        © 2025 Morgan Nyman · <a href="index.html" style="color:var(--accent);text-decoration:none;">Back to Home</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════ SCRIPT ═══════════════════════════ -->
+  <script>
+    // ── Scroll-fade observer ──────────────────────────────────
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.05 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ── TOC active highlight ──────────────────────────────────
+    const sections = document.querySelectorAll('.year-section[id]');
+    const tocLinks = document.querySelectorAll('.toc-link[data-section]');
+
+    const tocObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          tocLinks.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector(`.toc-link[data-section="${e.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+
+    sections.forEach(s => tocObs.observe(s));
+  </script>
+</body>
+</html>
